@@ -7,10 +7,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0" />
+        <PackageReference Include="QuestPDF" Version="2025.1.7" />
         <PackageReference Include="Scalar.AspNetCore" Version="2.1.1" />
         <PackageReference Include="Swashbuckle.AspNetCore.ReDoc" Version="8.0.0" />
         <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="8.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Generated\" />
     </ItemGroup>
 
 </Project>

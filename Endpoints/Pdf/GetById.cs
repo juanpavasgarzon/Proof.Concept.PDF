@@ -22,28 +22,24 @@ internal sealed class GetById : IEndpoint
     /// Handles the request to get a file by its unique identifier.
     /// </summary>
     /// <param name="id">The unique identifier of the file</param>
-    /// <param name="logger">The logger</param>
-    /// <param name="statuses">The statuses of the PDF generation jobs</param>
+    /// <param name="dictionary">The statuses of the PDF generation jobs</param>
     /// <param name="cancellationToken">The cancellation token</param>
     /// <returns>Returns the result of the request</returns>
     private static IResult HandleRequest(
         string id,
-        ILogger<GetById> logger,
-        ConcurrentDictionary<string, PdfGenerationStatus> statuses,
+        ConcurrentDictionary<string, Models.Pdf> dictionary,
         CancellationToken cancellationToken)
     {
-        logger.LogInformation("Getting file by id");
-
-        if (!statuses.TryGetValue(id, out var status))
+        if (!dictionary.TryGetValue(id, out var record))
         {
             return Results.NotFound();
         }
 
-        var response = new { Id = id, Status = status.ToString(), Link = string.Empty };
+        var response = new { Id = id, Status = dictionary.ToString(), Link = string.Empty };
 
-        if (status == PdfGenerationStatus.Completed)
+        if (record.Status == PdfGenerationStatus.Completed)
         {
-            response = response with { Link = $"https://localhost:5001/pdf/{id}/download" };
+            response = response with { Link = record.Link };
         }
 
         return Results.Ok(response);

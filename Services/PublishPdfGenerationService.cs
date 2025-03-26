@@ -6,7 +6,7 @@ namespace File.Api.Services;
 
 internal sealed class PublishPdfGenerationService(
     Channel<PdfGenerationJob> channel,
-    ConcurrentDictionary<string, PdfGenerationStatus> statuses
+    ConcurrentDictionary<string, Pdf> dictionary
 )
 {
     /// <summary>
@@ -29,7 +29,7 @@ internal sealed class PublishPdfGenerationService(
         var job = new PdfGenerationJob(id, name, data);
         await channel.Writer.WriteAsync(job, cancellationToken);
 
-        statuses[id] = PdfGenerationStatus.Queued;
+        dictionary[id] = new Pdf(name, PdfGenerationStatus.Queued, string.Empty);
 
         return id;
     }

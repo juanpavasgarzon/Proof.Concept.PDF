@@ -4,15 +4,18 @@ using System.Threading.Channels;
 using File.Api.Extensions;
 using File.Api.Models;
 using File.Api.Services;
+using QuestPDF.Infrastructure;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+QuestPDF.Settings.License = LicenseType.Community;
 
 builder.Services.AddOpenApi();
 builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSingleton<UrlResolverService>();
-builder.Services.AddSingleton<ConcurrentDictionary<string, PdfGenerationStatus>>();
+builder.Services.AddSingleton<ConcurrentDictionary<string, Pdf>>();
 builder.Services.AddSingleton<PublishPdfGenerationService>();
 builder.Services.AddHostedService<PdfGenerationService>();
 builder.Services.AddSingleton(_ =>
