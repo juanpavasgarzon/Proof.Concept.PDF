@@ -51,6 +51,6 @@ internal sealed class Create : IEndpoint
         var streamId = await publisher.PublishAsync(request.Name, request.File, cancellationToken);
         var url = linkGenerator.GetUriByName("Get-ById", new { id = streamId });
 
-        return Results.Accepted(url, new { Id = streamId, Status = PdfGenerationStatus.Queued });
+        return Results.Accepted(url, new { Id = streamId, Status = PdfGenerationStatus.Queued.ToString() });
     }
 }

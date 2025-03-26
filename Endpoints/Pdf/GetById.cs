@@ -39,7 +39,7 @@ internal sealed class GetById : IEndpoint
             return Results.NotFound();
         }
 
-        var response = new { Id = id, Status = status, Link = string.Empty };
+        var response = new { Id = id, Status = status.ToString(), Link = string.Empty };
 
         if (status == PdfGenerationStatus.Completed)
         {
