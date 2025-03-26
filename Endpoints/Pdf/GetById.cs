@@ -30,18 +30,8 @@ internal sealed class GetById : IEndpoint
         ConcurrentDictionary<string, Models.Pdf> dictionary,
         CancellationToken cancellationToken)
     {
-        if (!dictionary.TryGetValue(id, out var record))
-        {
-            return Results.NotFound();
-        }
-
-        var response = new { Id = id, Status = dictionary.ToString(), Link = string.Empty };
-
-        if (record.Status == PdfGenerationStatus.Completed)
-        {
-            response = response with { Link = record.Link };
-        }
-
-        return Results.Ok(response);
+        return !dictionary.TryGetValue(id, out var record)
+            ? Results.NotFound()
+            : Results.Ok(record.ToJson());
     }
 }

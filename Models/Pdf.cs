@@ -1,5 +1,3 @@
-using System.Text.Json;
-
 namespace File.Api.Models;
 
 public sealed class Pdf(string name, PdfGenerationStatus status, string link)
@@ -20,11 +18,11 @@ public sealed class Pdf(string name, PdfGenerationStatus status, string link)
     public string Link { get; set; } = link;
 
     /// <summary>
-    /// Returns a string representation of the record
+    /// Returns object representation of the record
     /// </summary>
-    /// <returns>A string representation of the record</returns>
-    public override string ToString()
+    /// <returns>Object representation of the record</returns>
+    public object ToJson()
     {
-        return JsonSerializer.Serialize(new { Name, Status = Status.ToString(), Link });
+        return new { Name, Status = Status.ToString(), Link };
     }
 }
