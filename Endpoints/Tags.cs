@@ -3,7 +3,7 @@ namespace File.Api.Endpoints;
 internal static class Tags
 {
     /// <summary>
-    /// Tag for the shipment endpoints.
+    /// Tag for the PDF endpoints.
     /// </summary>
-    public const string PDF = "PDF";
+    public const string Pdf = "Pdf";
 }

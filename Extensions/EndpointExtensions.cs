@@ -4,9 +4,6 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace File.Api.Extensions;
 
-/// <summary>
-/// Extension methods for adding and mapping endpoints in the application.
-/// </summary>
 public static class EndpointExtensions
 {
     /// <summary>

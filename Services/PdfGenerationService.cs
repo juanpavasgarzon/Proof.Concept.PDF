@@ -5,12 +5,16 @@ using File.Api.Models;
 
 namespace File.Api.Services;
 
-public class PdfGenerationService(
+internal sealed class PdfGenerationService(
     ILogger<PdfGenerationService> logger,
     Channel<PdfGenerationJob> channel,
     ConcurrentDictionary<string, PdfGenerationStatus> statuses
 ) : BackgroundService
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="PdfGenerationService"/> class.
+    /// </summary>
+    /// <param name="stoppingToken">The token to monitor for cancellation requests.</param>
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         await foreach (var job in channel.Reader.ReadAllAsync(stoppingToken))
@@ -30,6 +34,11 @@ public class PdfGenerationService(
         }
     }
 
+    /// <summary>
+    /// Processes the job asynchronously.
+    /// </summary>
+    /// <param name="job">The job to process</param>
+    /// <param name="cancellationToken">The cancellation token</param>
     private async Task ProcessJobAsync(PdfGenerationJob job, CancellationToken cancellationToken)
     {
         statuses[job.Id] = PdfGenerationStatus.Processing;
@@ -39,7 +48,6 @@ public class PdfGenerationService(
             await Task.Delay(TimeSpan.FromSeconds(10), cancellationToken);
 
             var content = Encoding.UTF8.GetString(job.Data);
-            // var json = JsonSerializer.Deserialize<object>(content);
 
             logger.LogInformation("Processing job {Id} with json {Json}", job.Id, content);
 

@@ -9,13 +9,12 @@ using Scalar.AspNetCore;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi();
-
 builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
-
 builder.Services.AddHttpContextAccessor();
-
 builder.Services.AddSingleton<UrlResolverService>();
-
+builder.Services.AddSingleton<ConcurrentDictionary<string, PdfGenerationStatus>>();
+builder.Services.AddSingleton<PublishPdfGenerationService>();
+builder.Services.AddHostedService<PdfGenerationService>();
 builder.Services.AddSingleton(_ =>
 {
     var channel = Channel.CreateBounded<PdfGenerationJob>(new BoundedChannelOptions(100)
@@ -26,13 +25,8 @@ builder.Services.AddSingleton(_ =>
     return channel;
 });
 
-builder.Services.AddSingleton<ConcurrentDictionary<string, PdfGenerationStatus>>();
-
-builder.Services.AddHostedService<PdfGenerationService>();
-
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
