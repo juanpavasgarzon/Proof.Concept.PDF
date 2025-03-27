@@ -14,7 +14,6 @@ QuestPDF.Settings.License = LicenseType.Community;
 builder.Services.AddOpenApi();
 builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddSingleton<UrlResolverService>();
 builder.Services.AddSingleton<ConcurrentDictionary<string, Pdf>>();
 builder.Services.AddSingleton<PublishPdfGenerationService>();
 builder.Services.AddHostedService<PdfGenerationService>();

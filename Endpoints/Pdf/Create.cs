@@ -1,5 +1,3 @@
-using System.Collections.Concurrent;
-using System.Threading.Channels;
 using File.Api.Models;
 using File.Api.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -34,13 +32,13 @@ internal sealed class Create : IEndpoint
     /// </summary>
     /// <param name="request">The request to create a new PDF.</param>
     /// <param name="publisher">The PDF generation service.</param>
-    /// <param name="linkGenerator">The URL resolver service.</param>
+    /// <param name="configuration"></param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>Returns the result of the request.</returns>
     private static async Task<IResult> HandleRequest(
         [FromForm] Request request,
         PublishPdfGenerationService publisher,
-        UrlResolverService linkGenerator,
+        IConfiguration configuration,
         CancellationToken cancellationToken)
     {
         if (request.File.ContentType != "application/json")
@@ -49,8 +47,10 @@ internal sealed class Create : IEndpoint
         }
 
         var streamId = await publisher.PublishAsync(request.Name, request.File, cancellationToken);
-        var url = linkGenerator.GetUriByName("Get-ById", new { id = streamId });
 
-        return Results.Accepted(url, new { Id = streamId, Status = PdfGenerationStatus.Queued.ToString() });
+        var baseUrl = new Uri(configuration["BaseUrl"]?.TrimEnd('/')!);
+        var fullUrl = new Uri(baseUrl, $"/pdf/{streamId}");
+
+        return Results.Accepted(fullUrl.ToString(), new { Id = streamId, Status = PdfGenerationStatus.Queued.ToString() });
     }
 }

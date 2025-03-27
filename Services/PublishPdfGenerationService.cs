@@ -29,7 +29,7 @@ internal sealed class PublishPdfGenerationService(
         var job = new PdfGenerationJob(id, name, data);
         await channel.Writer.WriteAsync(job, cancellationToken);
 
-        dictionary[id] = new Pdf(name, PdfGenerationStatus.Queued, string.Empty);
+        dictionary[id] = new Pdf(name, PdfGenerationStatus.Queued);
 
         return id;
     }

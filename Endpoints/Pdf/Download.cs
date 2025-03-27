@@ -35,17 +35,17 @@ internal sealed class Download : IEndpoint
             return Results.NotFound();
         }
 
-        if (string.IsNullOrEmpty(record.Link))
+        if (string.IsNullOrEmpty(record.Output))
         {
-            return Results.BadRequest("Link cannot be null or empty.");
+            return Results.BadRequest("Output cannot be null or empty.");
         }
 
-        if (!System.IO.File.Exists(record.Link))
+        if (!System.IO.File.Exists(record.Output))
         {
             return Results.NotFound();
         }
 
-        var fileBytes = await System.IO.File.ReadAllBytesAsync(record.Link, cancellationToken);
+        var fileBytes = await System.IO.File.ReadAllBytesAsync(record.Output, cancellationToken);
 
         return Results.File(fileBytes, "application/pdf", $"{DateTime.Now}.pdf");
     }

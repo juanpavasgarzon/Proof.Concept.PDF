@@ -1,6 +1,6 @@
 namespace File.Api.Models;
 
-public sealed class Pdf(string name, PdfGenerationStatus status, string link)
+public sealed class Pdf(string name, PdfGenerationStatus status)
 {
     /// <summary>
     /// The name of the PDF
@@ -13,9 +13,14 @@ public sealed class Pdf(string name, PdfGenerationStatus status, string link)
     public PdfGenerationStatus Status { get; set; } = status;
 
     /// <summary>
+    /// The output to the PDF
+    /// </summary>
+    public string? Output { get; set; }
+    
+    /// <summary>
     /// The link to the PDF
     /// </summary>
-    public string Link { get; set; } = link;
+    public string? Link { get; set; }
 
     /// <summary>
     /// Returns object representation of the record
